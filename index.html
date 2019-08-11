@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Suave Todo</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div id="root">
+
+    <div class="header">
+      <h2 class="title">Suave Todo</h2> 
+    </div>
+
+    <ul id="todos"></ul>
+
+    <form id="todo-form">
+      <input type="text" name="name" id="todo-name" placeholder="Write a blogpost">
+      <input type="submit" value="Add">
+    </form>
+
+    <div class="filters small-font">
+      <div class="filter-label">Filter: </div>
+
+      <div class="filter">
+        <input type="radio" name="filter" id="filter-all" checked="checked" value="all">
+        <label for="filter-all">All(<span class="count">0</span>)</label>
+      </div>
+
+      <div class="filter">
+        <input type="radio" name="filter" id="filter-active" value="active">
+        <label for="filter-active">Active(<span class="count">0</span>)</label>
+      </div>
+
+      <div class="filter">
+        <input type="radio" name="filter" id="filter-done" value="done">
+        <label for="filter-done">Done(<span class="count">0</span>)</label>
+      </div>
+
+    </div>
+
+    <div class="footer small-font">
+      Double-click to edit todo. CopyLeft Neville Omangi.
+    </div>
+  </div>
+
+  <script src="./js/main.js" type="module"></script>
+</body>
+</html>

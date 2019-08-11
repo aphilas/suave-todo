@@ -1,0 +1,120 @@
+/* button */
+
+button, input[type=submit] {
+  font-family: var(--primary-font);
+  
+  padding: .75em 2em;
+  border: none;
+
+  border-radius: 4px;
+}
+
+/* text input */
+
+input[type=text] {
+  --lighter-gray: rgba(150, 150, 150, .7);
+  --blue: rgba(70, 100, 240, 1);
+
+  border: 0;
+  border-bottom: 2px solid var(--lighter-gray);
+  margin: 0 .5em;
+
+  font-size: 1em;
+
+  transition: border .2s ease;
+}
+
+input[type=text]::placeholder {
+  color: var(--lighter-gray);
+}
+
+input[type=text]:hover, input[type=text]:focus {
+  border-bottom: 2px solid var(--blue);
+}
+
+input[type=text]:focus {
+  outline: none;
+}
+
+
+/* checkbox */
+
+.checkbox {
+  --check-border: 2px solid rgba(180, 180, 180, .5);
+  --check-size: 16px;
+  --green: rgba(100, 180, 1, 1);
+
+  padding: 2px;
+  margin-right: .5em;
+}
+
+.checkbox input[type="checkbox"] {
+  opacity: 0;
+}
+
+.checkbox label::before{
+  content: "";
+  display: inline-block;
+  
+  height: var(--check-size);
+  width: var(--check-size);
+  border-radius: var(--check-size);
+  border: var(--check-border);
+
+  cursor: pointer;
+}
+
+.checkbox label::after {
+  content: "";
+  display: inline-block;
+  height: 4px;
+  width: 8px;
+  border-left: var(--check-border);
+  border-bottom: var(--check-border);
+  transform: rotate(-45deg);
+
+  cursor: pointer;
+}
+
+.checkbox label {
+  position: relative;
+}
+
+.checkbox label::before,
+.checkbox label::after {
+  position: absolute;
+}
+
+.checkbox label::before {
+  top: -1px;
+  left: -20px;
+}
+
+.checkbox label::after {
+  left: -15px;
+  top: 5px;
+}
+
+.checkbox input[type="checkbox"] + label::after {
+  content: none;
+}
+
+.checkbox input[type="checkbox"]:checked + label::after {
+  content: "";
+}
+
+.checkbox input[type="checkbox"]:hover + label::after {
+  content: "";
+}
+
+/* filled */
+
+.checkbox.filled input[type="checkbox"]:checked + label::after {
+  content: "";
+  border-color: white;
+}
+
+.checkbox.filled input[type="checkbox"]:checked + label::before {
+  border-color: var(--green);
+  background-color: var(--green);
+}
