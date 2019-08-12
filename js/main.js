@@ -10,6 +10,16 @@ const countEls = document.getElementsByClassName('count')
 
 const todos = []
 
+const zipTodos = _ => {
+  const todosClone = [...data.todos] 
+  todosClone.forEach(todo => todo.detachWatchers())
+  return JSON.stringify(todosClone)
+}
+
+const storeTodos = () => {
+  localStorage.setItem('todos', zipTodos())
+}
+
 const todosCount = _ => {
   const total = todos.length
   const done = todos.filter(todo => todo.done === true).length
@@ -34,6 +44,7 @@ const addTodo = text => {
   todosEl.appendChild(todo.el)
   todos.push(todo)
   updateLength()
+  storeTodos()
 }
 
 const deleteTodo = todo => {
@@ -79,7 +90,20 @@ Array.from(filterEls).forEach(el => {
   })
 })
 
-export { deleteTodo, updateLength }
+const readStorage = () => {
+  const archive = JSON.parse(localStorage.getItem('todos'))
+
+  if (archive && archive.length > 0) {
+    archive.forEach(todo => {
+      addTodo(todo)
+    })
+  }
+}
+
+window.addEventListener('load', readStorage)
+
+// readStorage()
+
 
 /**
  * TODO: Reorder todo item on done/not-done
