@@ -1,5 +1,5 @@
 import { addStyle, el, appendChildren, _ } from './dom.js'
-import { Todo } from './todo.js'
+import { Todo, TodoDOM } from './todo.js'
 
 const formEl = document.getElementById('todo-form')
 const todosEl = document.getElementById('todos')
@@ -8,7 +8,10 @@ const todoEls = document.getElementsByClassName('todo')
 const doneEls = document.getElementsByClassName('done')
 const countEls = document.getElementsByClassName('count')
 
-const todos = []
+const data = {
+  todos: [],
+  todosDOM: []
+}
 
 const zipTodos = _ => {
   const todosClone = [...data.todos] 
@@ -21,8 +24,8 @@ const storeTodos = () => {
 }
 
 const todosCount = _ => {
-  const total = todos.length
-  const done = todos.filter(todo => todo.done === true).length
+  const total = data.todos.length
+  const done = data.todos.filter(todo => todo.done === true).length
   const active = total - done
   
   return {
@@ -39,29 +42,42 @@ const updateLength = _ => {
   })
 }
 
-const addTodo = text => {
-  const todo = new Todo(text)
-  todosEl.appendChild(todo.el)
-  todos.push(todo)
+const updateApp = _ => {
   updateLength()
   storeTodos()
 }
 
-const deleteTodo = todo => {
-  // equality by reference
-  todos.filter(item => item === todo)
-  todo.el.remove()
-  updateLength()
+const addToDoDOM = todo => {
+  const todoDOM = new TodoDOM(todo)
+  data.todosDOM.push(todoDOM)
+  todosEl.appendChild(todoDOM.el)
 }
 
-addTodo('Wash')
-addTodo('Eat')
-addTodo('March')
+const addTodo = (todoObj) => {
+  const todo = new Todo(todoObj)
+  data.todos.push(todo)
+
+  addToDoDOM(todo)
+  updateApp()
+}
+
+const deleteTodoDOM = dom => {
+  // delete actual todo
+  data.todos = data.todos.filter(item => !(item === dom.todo))
+
+  // detach DOM
+  dom.el.remove()
+
+  data.todosDOM = data.todosDOM.filter(item => !(item === dom))
+
+  updateApp()
+}
 
 formEl.addEventListener('submit', event => {
   event.preventDefault()
-  const text = event.target[0].value
-  addTodo(text)
+  const input = event.target[0]
+  addTodo({textVal: input.value})
+  input.value = ''
 })
 
 Array.from(filterEls).forEach(el => {
@@ -104,6 +120,7 @@ window.addEventListener('load', readStorage)
 
 // readStorage()
 
+export { deleteTodoDOM, updateApp, updateLength }
 
 /**
  * TODO: Reorder todo item on done/not-done
