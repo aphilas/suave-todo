@@ -56,12 +56,12 @@ const el = (tag = 'div', attrs = {}, classes, children) => {
     // attribute event listeners e.g. onclick
     if (prop.startsWith('on')) {
       const callback = attrs[prop]
-      if (callback) el.addEventListener(attrs[prop].slice(2), attrs[prop])
+      if (typeof callback === 'function') el.addEventListener(attrs[prop].slice(2), attrs[prop])
     } 
     
     // 'set' attributes
     else if (setAttrs.includes(prop)) {
-      if (attrs[prop] === null) continue
+      if (attrs[prop] === null || attrs[prop] === false) continue
       el.setAttribute(prop, prop)
     } 
     
@@ -74,7 +74,7 @@ const el = (tag = 'div', attrs = {}, classes, children) => {
 
   // classes
 
-  if (Array.isArray(classes) && classes.length > 0) {
+  if (nonEmptyArray(classes)) {
     el.classList.add(...classes)
   } 
   
@@ -84,29 +84,13 @@ const el = (tag = 'div', attrs = {}, classes, children) => {
 
   // children
 
-  // text
-
   if (children === undefined || children === null) return el
   
-  // no-array
-  if (!Array.isArray(children)) {
-    if (typeof children === 'string') {
-      if(children !== '') el.appendChild(document.createTextNode(children))
-      return el
-    }
-  
-    if (children instanceof Node) {
-      el.appendChild(children)
-      return el
-    }
-
-  // arrays
-  } else {
-
-    if (children.length < 1) return el
-
+  // array
+  if (nonEmptyArray(children)) {
     children.forEach(child => {
-      // text content
+      
+      // text
       if (typeof child === 'string') {
         el.appendChild(document.createTextNode(child))
       } 
@@ -116,7 +100,17 @@ const el = (tag = 'div', attrs = {}, classes, children) => {
         el.appendChild(child)
       }
     })
-  }  
+  }
+  
+  // string
+  else if (typeof children === 'string' && children !== '') {
+    el.appendChild(document.createTextNode(children))
+  }
+  
+  // node
+  else if (children instanceof Node) {
+    el.appendChild(children)
+  }
 
   return el
 }

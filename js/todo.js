@@ -1,11 +1,11 @@
 import { el, appendChildren, _ } from './dom.js'
-import { updateLength, deleteTodoDOM, updateApp } from './main.js'
+import { deleteTodoDOM, updateApp } from './main.js'
 
 let labelCount = 0
 
 class Todo {
   /**
-   *      
+   *  
    * @param {object} todoValues
    * 
    * @param {string} todoValues.textVal
@@ -44,7 +44,7 @@ class Todo {
 
   notify(name, newVal) {
     if (this.watchers.length > 0) 
-      this.watchers.forEach(({context, fn}) => fn.call(context, {name, newVal}))
+      this.watchers.forEach(({context, fn}) => fn.call(context || null, {name, newVal}))
   }
 
   detachWatchers() {

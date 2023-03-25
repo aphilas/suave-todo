@@ -1,4 +1,3 @@
-import { addStyle, el, appendChildren, _ } from './dom.js'
 import { Todo, TodoDOM } from './todo.js'
 
 const formEl = document.getElementById('todo-form')
